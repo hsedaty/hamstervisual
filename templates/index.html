@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hamster Visual</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+  </head>
+  <body>
+    <main class="layout">
+      <section class="hero-card intro-card">
+        <p class="eyebrow">Hamster pose reactions</p>
+        <h1>Point the camera at a face and match the doodle pose.</h1>
+        <p class="lede">
+          The browser streams webcam frames to a small Python backend. The backend runs
+          landmark detection and returns the best hamster sticker match.
+        </p>
+        <div class="pose-list">
+          <span>peace</span>
+          <span>thumb up</span>
+          <span>thumb down</span>
+          <span>strong</span>
+          <span>shh</span>
+          <span>nerd</span>
+          <span>love</span>
+        </div>
+      </section>
+
+      <section class="hero-card stage-card">
+        <div class="video-shell">
+          <video id="webcam" autoplay playsinline muted></video>
+          <canvas id="overlay" width="640" height="480"></canvas>
+          <div class="video-badge" id="camera-status">camera booting</div>
+        </div>
+        <canvas id="capture" width="640" height="480" hidden></canvas>
+      </section>
+
+      <section class="hero-card sticker-card">
+        <div class="sticker-head">
+          <p class="eyebrow">Live sticker</p>
+          <p class="pose-readout"><span id="pose-name">no-face</span><span id="pose-confidence">0%</span></p>
+        </div>
+        <img id="sticker-image" alt="Current hamster sticker" src="{{ url_for('static', filename='stickers/no-face.svg') }}" />
+        <pre id="debug-panel">waiting for first frame...</pre>
+      </section>
+    </main>
+
+    <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+  </body>
+</html>

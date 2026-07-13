@@ -1,0 +1,223 @@
+:root {
+  --paper: #fff8ef;
+  --ink: #1f1726;
+  --accent: #ff8fb1;
+  --accent-strong: #ff5e86;
+  --mint: #b9f3dd;
+  --panel: rgba(255, 255, 255, 0.72);
+  --shadow: 0 24px 60px rgba(51, 30, 34, 0.14);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Trebuchet MS", "Gill Sans", sans-serif;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at top left, rgba(255, 143, 177, 0.18), transparent 32%),
+    radial-gradient(circle at bottom right, rgba(185, 243, 221, 0.45), transparent 30%),
+    linear-gradient(180deg, #fffdf8 0%, var(--paper) 100%);
+}
+
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  inset: auto;
+  width: 18rem;
+  height: 18rem;
+  border-radius: 999px;
+  filter: blur(18px);
+  opacity: 0.25;
+  pointer-events: none;
+}
+
+body::before {
+  top: -4rem;
+  right: -5rem;
+  background: #ffd8a8;
+}
+
+body::after {
+  bottom: -3rem;
+  left: -5rem;
+  background: #ffc0d5;
+}
+
+.layout {
+  width: min(1480px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 2rem 0 3rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  align-items: stretch;
+}
+
+.hero-card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(31, 23, 38, 0.08);
+  border-radius: 28px;
+  background: var(--panel);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
+}
+
+.intro-card,
+.stage-card,
+.sticker-card {
+  padding: 1.25rem;
+}
+
+.intro-card {
+  grid-column: 1 / -1;
+}
+
+.eyebrow {
+  margin: 0 0 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.75rem;
+  color: rgba(31, 23, 38, 0.62);
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 4rem);
+  line-height: 0.98;
+}
+
+.lede {
+  margin: 1rem 0 0;
+  max-width: 32rem;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.pose-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 1.2rem;
+}
+
+.pose-list span,
+.video-badge,
+.pose-readout span {
+  border-radius: 999px;
+  padding: 0.5rem 0.8rem;
+  background: rgba(31, 23, 38, 0.08);
+}
+
+.stage-card {
+  display: flex;
+  min-height: clamp(32rem, 72vh, 56rem);
+}
+
+.video-shell {
+  position: relative;
+  width: 100%;
+  min-height: 100%;
+  border-radius: 24px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #16111d, #3f2d37);
+}
+
+#webcam {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scaleX(-1);
+}
+
+#overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.video-badge {
+  position: absolute;
+  left: 1rem;
+  bottom: 1rem;
+  background: rgba(255, 248, 239, 0.82);
+}
+
+.sticker-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  min-height: clamp(32rem, 72vh, 56rem);
+}
+
+.sticker-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+
+.pose-readout {
+  display: flex;
+  gap: 0.5rem;
+  margin: 0;
+}
+
+#pose-name {
+  background: rgba(255, 94, 134, 0.16);
+}
+
+#pose-confidence {
+  background: rgba(185, 243, 221, 0.6);
+}
+
+#sticker-image {
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+  object-fit: contain;
+  border-radius: 24px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(255, 241, 246, 0.92));
+  border: 1px solid rgba(31, 23, 38, 0.06);
+}
+
+#debug-panel {
+  margin: 0;
+  padding: 0.9rem;
+  min-height: 9rem;
+  white-space: pre-wrap;
+  font: 0.85rem/1.4 "SFMono-Regular", Consolas, monospace;
+  border-radius: 18px;
+  background: rgba(31, 23, 38, 0.92);
+  color: #fff7fb;
+}
+
+@media (max-width: 980px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .intro-card {
+    grid-column: auto;
+  }
+
+  .video-shell {
+    min-height: 360px;
+  }
+
+  .stage-card,
+  .sticker-card {
+    min-height: auto;
+  }
+
+  #sticker-image {
+    min-height: 22rem;
+  }
+}

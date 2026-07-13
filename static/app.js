@@ -150,4 +150,9 @@ function clearOverlay() {
 webcam.addEventListener("loadedmetadata", syncCanvasSizes);
 window.addEventListener("resize", syncCanvasSizes);
 
+document.querySelector("#sign-out-btn")?.addEventListener("click", async () => {
+  await fetch("/api/auth/logout", { method: "POST" });
+  window.location.href = "/auth";
+});
+
 startCamera();

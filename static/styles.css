@@ -8,6 +8,32 @@
   --shadow: 0 24px 60px rgba(51, 30, 34, 0.14);
 }
 
+/* ── Session bar (pose detection page) ──────────────────────────── */
+
+.session-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.9rem;
+  border-bottom: 1px solid rgba(31, 23, 38, 0.08);
+}
+
+.sign-out-btn {
+  border: none;
+  border-radius: 999px;
+  padding: 0.4rem 0.9rem;
+  font: inherit;
+  font-size: 0.82rem;
+  cursor: pointer;
+  background: rgba(255, 94, 134, 0.12);
+  color: #c02050;
+  transition: opacity 0.15s;
+}
+
+.sign-out-btn:hover { opacity: 0.7; }
+
 * {
   box-sizing: border-box;
 }

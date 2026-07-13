@@ -1,0 +1,340 @@
+/* ── Auth layout ──────────────────────────────────────────────── */
+
+.auth-layout {
+  width: min(1480px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 2rem 0 3rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto 1fr;
+  gap: 1rem;
+}
+
+.auth-header {
+  grid-column: 1 / -1;
+  padding: 1.25rem 1.5rem;
+}
+
+.auth-header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.auth-header h1 {
+  font-size: clamp(1.8rem, 3vw, 3rem);
+  margin: 0;
+  line-height: 1;
+}
+
+.auth-nav {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.pill-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border-radius: 999px;
+  padding: 0.55rem 1rem;
+  font-size: 0.9rem;
+  text-decoration: none;
+  background: var(--ink);
+  color: #fff;
+  font-family: inherit;
+  transition: opacity 0.15s;
+}
+
+.pill-link:hover { opacity: 0.78; }
+
+.pill-link--muted {
+  background: rgba(31, 23, 38, 0.08);
+  color: var(--ink);
+}
+
+.enrolled-badge {
+  background: rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  padding: 0.15rem 0.55rem;
+  font-size: 0.78rem;
+}
+
+/* ── Camera card (shared with main layout) ────────────────────── */
+
+.auth-cam-card {
+  display: flex;
+  min-height: clamp(28rem, 65vh, 52rem);
+}
+
+/* ── Auth result card ─────────────────────────────────────────── */
+
+.auth-result-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: clamp(28rem, 65vh, 52rem);
+  padding: 2rem;
+}
+
+.auth-status-block {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* Ring */
+.auth-ring {
+  width: clamp(7rem, 18vw, 11rem);
+  height: clamp(7rem, 18vw, 11rem);
+  border-radius: 50%;
+  border: 6px solid rgba(31, 23, 38, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  font-size: clamp(2.5rem, 7vw, 4.5rem);
+}
+
+[data-state="authenticated"] .auth-ring {
+  border-color: #7dff85;
+  box-shadow: 0 0 36px rgba(125, 255, 133, 0.5);
+}
+
+[data-state="denied"] .auth-ring {
+  border-color: #ff5e86;
+  box-shadow: 0 0 36px rgba(255, 94, 134, 0.46);
+}
+
+[data-state="scanning"] .auth-ring {
+  border-color: var(--accent);
+}
+
+/* State label */
+.auth-state-label {
+  margin: 0;
+  font-size: clamp(1.4rem, 4vw, 2.8rem);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-align: center;
+  transition: color 0.3s;
+}
+
+[data-state="authenticated"] .auth-state-label { color: #2ea84a; }
+[data-state="denied"]        .auth-state-label { color: #d63560; }
+
+/* Confidence */
+.auth-confidence {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.auth-confidence-track {
+  width: 100%;
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(31, 23, 38, 0.1);
+  overflow: hidden;
+}
+
+.auth-confidence-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--accent-strong);
+  transition: width 0.25s ease, background 0.3s;
+}
+
+[data-state="authenticated"] .auth-confidence-fill { background: #7dff85; }
+[data-state="denied"]        .auth-confidence-fill { background: #ff5e86; }
+
+.auth-confidence-value {
+  font-size: 1.1rem;
+  font-weight: 600;
+  align-self: flex-end;
+}
+
+/* ── Enroll layout ────────────────────────────────────────────── */
+
+.enroll-layout {
+  width: min(1100px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 2rem 0 3rem;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  grid-template-rows: auto 1fr;
+  gap: 1rem;
+}
+
+.enroll-upload-card {
+  grid-column: 1;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.enroll-log-card {
+  grid-column: 2;
+  grid-row: 2;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  overflow-y: auto;
+  max-height: 36rem;
+}
+
+/* Drop zone */
+.drop-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 2rem;
+  border-radius: 20px;
+  border: 2px dashed rgba(31, 23, 38, 0.2);
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+.drop-zone:hover,
+.drop-zone--over {
+  border-color: var(--accent-strong);
+  background: rgba(255, 94, 134, 0.05);
+}
+
+.drop-zone-icon {
+  font-size: 2.5rem;
+  line-height: 1;
+  color: var(--accent-strong);
+}
+
+/* Actions row */
+.enroll-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.enroll-btn {
+  border: none;
+  border-radius: 999px;
+  padding: 0.6rem 1.1rem;
+  font: inherit;
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.enroll-btn:hover { opacity: 0.75; }
+
+.enroll-btn--danger {
+  background: rgba(255, 94, 134, 0.14);
+  color: #c02050;
+}
+
+.enrolled-count-label { margin-left: auto; }
+
+/* Log list */
+.enroll-log {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.enroll-log-empty {
+  color: rgba(31, 23, 38, 0.4);
+  font-size: 0.9rem;
+}
+
+.enroll-log-item {
+  font-size: 0.88rem;
+  padding: 0.55rem 0.75rem;
+  border-radius: 12px;
+  background: rgba(31, 23, 38, 0.05);
+}
+
+.enroll-log-item--ok  { background: rgba(125, 255, 133, 0.18); color: #1a7a2c; }
+.enroll-log-item--err { background: rgba(255, 94, 134, 0.18);  color: #c02050; }
+.enroll-log-item--pending { background: rgba(255, 193, 80, 0.18); color: #7a5000; }
+
+/* ── Overlay canvas (auth page) ───────────────────────────────── */
+
+#auth-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* ── Responsive ───────────────────────────────────────────────── */
+
+@media (max-width: 860px) {
+  .auth-layout,
+  .enroll-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .auth-header,
+  .enroll-upload-card,
+  .enroll-log-card {
+    grid-column: auto;
+  }
+
+  .auth-cam-card,
+  .auth-result-card {
+    min-height: auto;
+  }
+}
+
+/* ── Authenticated person name ───────────────────────────────────── */
+
+.auth-name-label {
+  margin: 0;
+  font-size: clamp(1rem, 2.5vw, 1.6rem);
+  font-weight: 600;
+  text-align: center;
+  color: #2ea84a;
+  min-height: 1.8rem;
+  transition: opacity 0.25s;
+}
+
+[data-state="denied"] .auth-name-label,
+[data-state="scanning"] .auth-name-label,
+[data-state="idle"] .auth-name-label { opacity: 0; }
+
+/* ── Name input on enroll page ───────────────────────────────────── */
+
+.name-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.name-input {
+  padding: 0.6rem 0.9rem;
+  border-radius: 12px;
+  border: 1px solid rgba(31, 23, 38, 0.18);
+  font: inherit;
+  font-size: 0.95rem;
+  background: rgba(255, 255, 255, 0.8);
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.name-input:focus { border-color: var(--accent-strong); }

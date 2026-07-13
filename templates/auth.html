@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hamster Auth</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='auth.css') }}" />
+  </head>
+  <body>
+    <main class="auth-layout">
+
+      <header class="hero-card auth-header">
+        <div class="auth-header-inner">
+          <div>
+            <p class="eyebrow">Hamster Visual</p>
+            <h1>Face Authentication</h1>
+          </div>
+          <nav class="auth-nav">
+            <a href="/auth/enroll" class="pill-link">
+              Enroll faces
+              <span class="enrolled-badge" id="enrolled-badge">—</span>
+            </a>
+          </nav>
+        </div>
+      </header>
+
+      <section class="hero-card auth-cam-card">
+        <div class="video-shell">
+          <video id="webcam" autoplay playsinline muted></video>
+          <canvas id="auth-overlay"></canvas>
+          <div class="video-badge" id="camera-status">camera booting</div>
+        </div>
+        <canvas id="capture" width="640" height="480" hidden></canvas>
+      </section>
+
+      <section class="hero-card auth-result-card">
+        <div class="auth-status-block" id="auth-status-block" data-state="idle">
+          <div class="auth-ring" id="auth-ring">
+            <span class="auth-ring-icon" id="auth-ring-icon">?</span>
+          </div>
+          <p class="auth-state-label" id="auth-state-label">scanning…</p>
+          <p class="auth-name-label" id="auth-name-label"></p>
+
+          <div class="auth-confidence">
+            <p class="eyebrow">match confidence</p>
+            <div class="auth-confidence-track">
+              <div class="auth-confidence-fill" id="confidence-fill" style="width:0%"></div>
+            </div>
+            <span class="auth-confidence-value" id="confidence-value">0%</span>
+          </div>
+        </div>
+      </section>
+
+    </main>
+    <script src="{{ url_for('static', filename='auth.js') }}" defer></script>
+  </body>
+</html>

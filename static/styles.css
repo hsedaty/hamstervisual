@@ -20,6 +20,62 @@
   border-bottom: 1px solid rgba(31, 23, 38, 0.08);
 }
 
+.toggle-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+  color: rgba(31, 23, 38, 0.8);
+}
+
+.toggle-label {
+  white-space: nowrap;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 2.2rem;
+  height: 1.2rem;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background: rgba(31, 23, 38, 0.18);
+  border-radius: 999px;
+  transition: background 0.2s ease;
+}
+
+.slider::before {
+  content: "";
+  position: absolute;
+  height: 0.92rem;
+  width: 0.92rem;
+  left: 0.14rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+  transition: transform 0.2s ease;
+}
+
+.switch input:checked + .slider {
+  background: rgba(125, 255, 133, 0.4);
+}
+
+.switch input:checked + .slider::before {
+  transform: translateY(-50%) translateX(1rem);
+}
+
 .sign-out-btn {
   border: none;
   border-radius: 999px;
@@ -141,20 +197,26 @@ h1 {
 }
 
 .stage-card {
-  display: flex;
-  min-height: clamp(32rem, 72vh, 56rem);
+  position: relative;
+  display: block;
+  grid-column: 1 / -1;
+  min-height: clamp(24rem, 56vh, 48rem);
+  padding: 0;
 }
 
 .video-shell {
   position: relative;
   width: 100%;
-  min-height: 100%;
+  min-height: 24rem;
+  aspect-ratio: 16 / 9;
   border-radius: 24px;
   overflow: hidden;
   background: linear-gradient(135deg, #16111d, #3f2d37);
 }
 
 #webcam {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -180,7 +242,11 @@ h1 {
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
-  min-height: clamp(32rem, 72vh, 56rem);
+  min-height: auto;
+}
+
+.live-sticker-panel #sticker-image {
+  max-height: 24rem;
 }
 
 .sticker-head {
@@ -205,7 +271,9 @@ h1 {
 }
 
 #sticker-image {
-  width: 100%;
+  width: 24rem;
+  max-width: 100%;
+  height: auto;
   flex: 1;
   min-height: 0;
   object-fit: contain;
@@ -215,7 +283,7 @@ h1 {
 }
 
 #debug-panel {
-  margin: 0;
+  margin: 1.25rem 0 0;
   padding: 0.9rem;
   min-height: 9rem;
   white-space: pre-wrap;
@@ -223,6 +291,23 @@ h1 {
   border-radius: 18px;
   background: rgba(31, 23, 38, 0.92);
   color: #fff7fb;
+}
+
+.live-sticker-panel {
+  position: absolute;
+  right: 2rem;
+  top: 0;
+  translate: 12% 0;
+  width: min(24rem, 36%);
+  max-width: 24rem;
+  height: min(30rem, 50%);
+  max-height: 30rem;
+  padding: 1rem;
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(31, 23, 38, 0.08);
+  box-shadow: 0 20px 50px rgba(31, 23, 38, 0.14);
 }
 
 @media (max-width: 980px) {
@@ -235,15 +320,23 @@ h1 {
   }
 
   .video-shell {
-    min-height: 360px;
+    min-height: 260px;
+    aspect-ratio: auto;
   }
 
-  .stage-card,
-  .sticker-card {
+  .live-sticker-panel {
+    position: static;
+    width: 100%;
+    max-width: none;
+    margin-top: 1rem;
+    box-shadow: var(--shadow);
+  }
+
+  .stage-card {
     min-height: auto;
   }
 
   #sticker-image {
-    min-height: 22rem;
+    min-height: 28rem;
   }
 }

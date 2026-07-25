@@ -11,14 +11,16 @@
       <section class="hero-card intro-card">
         <div class="session-bar">
           <span class="eyebrow">Signed in as <strong>{{ matched_name }}</strong></span>
+          <div class="toggle-group">
+            <label class="switch">
+              <input type="checkbox" id="dev-mode-toggle" />
+              <span class="slider"></span>
+            </label>
+            <span class="toggle-label">Development mode</span>
+          </div>
           <button class="sign-out-btn" id="sign-out-btn">Sign out</button>
         </div>
-        <p class="eyebrow">Hamster pose reactions</p>
-        <h1>Point the camera at a face and match the doodle pose.</h1>
-        <p class="lede">
-          The browser streams webcam frames to a small Python backend. The backend runs
-          landmark detection and returns the best hamster sticker match.
-        </p>
+        <h1>Hampter pose list</h1>
         <div class="pose-list">
           <span>peace</span>
           <span>thumb up</span>
@@ -35,17 +37,18 @@
           <video id="webcam" autoplay playsinline muted></video>
           <canvas id="overlay" width="640" height="480"></canvas>
           <div class="video-badge" id="camera-status">camera booting</div>
-        </div>
-        <canvas id="capture" width="640" height="480" hidden></canvas>
-      </section>
 
-      <section class="hero-card sticker-card">
-        <div class="sticker-head">
-          <p class="eyebrow">Live sticker</p>
-          <p class="pose-readout"><span id="pose-name">no-face</span><span id="pose-confidence">0%</span></p>
+          <div class="hero-card sticker-card live-sticker-panel">
+            <div class="sticker-head">
+              <p class="eyebrow">Live sticker</p>
+              <p class="pose-readout"><span id="pose-name">no-face</span><span id="pose-confidence">0%</span></p>
+            </div>
+            <img id="sticker-image" alt="Current hamster sticker" src="{{ url_for('static', filename='stickers/no-face.jpg') }}" />
+          </div>
         </div>
-        <img id="sticker-image" alt="Current hamster sticker" src="{{ url_for('static', filename='stickers/no-face.svg') }}" />
+
         <pre id="debug-panel">waiting for first frame...</pre>
+        <canvas id="capture" width="640" height="480" hidden></canvas>
       </section>
     </main>
 

@@ -7,10 +7,12 @@ const poseName = document.querySelector("#pose-name");
 const poseConfidence = document.querySelector("#pose-confidence");
 const stickerImage = document.querySelector("#sticker-image");
 const debugPanel = document.querySelector("#debug-panel");
+const devModeToggle = document.querySelector("#dev-mode-toggle");
+let devMode = false;
 
 const stickerMap = {
-  "no-face": "/static/stickers/no-face.jpeg",
-  neutral: "/static/stickers/neutral.svg",
+  "no-face": "/static/stickers/no-face.jpg",
+  neutral: "/static/stickers/neutral.jpg",
   peace: "/static/stickers/peace.jpeg",
   "thumb up": "/static/stickers/thup.jpeg",
   "thumb down": "/static/stickers/thdown.jpeg",
@@ -79,14 +81,24 @@ async function sendFrame() {
     poseName.textContent = pose;
     poseConfidence.textContent = `${Math.round((payload.confidence || 0) * 100)}%`;
     stickerImage.src = stickerMap[pose];
-    drawOverlay(payload.overlay);
-    debugPanel.textContent = JSON.stringify(payload.metrics, null, 2);
+    if (devMode) {
+      drawOverlay(payload.overlay);
+      debugPanel.textContent = JSON.stringify(payload.metrics, null, 2);
+    } else {
+      clearOverlay();
+    }
   } catch (error) {
     clearOverlay();
     debugPanel.textContent = String(error);
   } finally {
+    updateDevModeVisibility();
     isSending = false;
   }
+}
+
+function updateDevModeVisibility() {
+  overlay.style.display = devMode ? "block" : "none";
+  debugPanel.style.display = devMode ? "block" : "none";
 }
 
 function syncCanvasSizes() {
@@ -149,6 +161,13 @@ function clearOverlay() {
 
 webcam.addEventListener("loadedmetadata", syncCanvasSizes);
 window.addEventListener("resize", syncCanvasSizes);
+
+devModeToggle?.addEventListener("change", () => {
+  devMode = devModeToggle.checked;
+  updateDevModeVisibility();
+});
+
+updateDevModeVisibility();
 
 document.querySelector("#sign-out-btn")?.addEventListener("click", async () => {
   await fetch("/api/auth/logout", { method: "POST" });

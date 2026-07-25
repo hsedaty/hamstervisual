@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
-  <rect width="512" height="512" rx="40" fill="#FFF9F2"/>
-  <path d="M144 434C132 251 173 109 256 109C339 109 380 251 368 434" stroke="#17131A" stroke-width="8" stroke-linecap="round"/>
-  <circle cx="214" cy="220" r="18" fill="#17131A"/>
-  <circle cx="298" cy="220" r="18" fill="#17131A"/>
-  <path d="M236 265C248 248 264 248 276 265" stroke="#FF9AB6" stroke-width="18" stroke-linecap="round"/>
-  <path d="M222 322C244 312 268 312 290 322" stroke="#17131A" stroke-width="8" stroke-linecap="round"/>
-  <text x="256" y="468" text-anchor="middle" font-family="Trebuchet MS, sans-serif" font-size="28" fill="#17131A">face not found</text>
-</svg>

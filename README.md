@@ -20,6 +20,27 @@ python3 app.py
 
 Open http://127.0.0.1:5000 in the browser and allow webcam access.
 
+## Publish on GitHub Pages
+
+GitHub Pages can only host the static frontend from this repository. The Python Flask routes and OpenCV or MediaPipe APIs in `app.py`, `face_auth.py`, and `pose_detector.py` do not run on Pages.
+
+This repo now includes Pages-ready entry points in the repository root:
+
+- `index.html`
+- `auth/index.html`
+- `auth/enroll/index.html`
+
+To publish them:
+
+1. Push the repository to GitHub.
+2. Open Settings > Pages.
+3. Set Source to `Deploy from a branch`.
+4. Choose branch `main`.
+5. Choose folder `/ (root)`.
+6. Save.
+
+The published site will show the UI and webcam preview, but live pose detection and face enrollment or verification still require running the Flask app locally.
+
 ## Current pose labels
 
 - `strong`: one hand high, one low, wide spread

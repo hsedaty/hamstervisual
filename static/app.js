@@ -8,6 +8,11 @@ const poseConfidence = document.querySelector("#pose-confidence");
 const stickerImage = document.querySelector("#sticker-image");
 const debugPanel = document.querySelector("#debug-panel");
 const devModeToggle = document.querySelector("#dev-mode-toggle");
+const pageConfig = {
+  staticPreview: document.body?.dataset.staticPreview === "true",
+  apiBase: document.body?.dataset.apiBase || "",
+  authUrl: document.body?.dataset.authUrl || "/auth",
+};
 let devMode = false;
 
 const stickerMap = {
@@ -25,6 +30,14 @@ const stickerMap = {
 let isSending = false;
 const overlayContext = overlay.getContext("2d");
 
+function getApiUrl(path) {
+  return pageConfig.apiBase ? `${pageConfig.apiBase}${path}` : path;
+}
+
+function openPath(path) {
+  window.location.href = new URL(path, document.baseURI).href;
+}
+
 async function startCamera() {
   try {
     const stream = await navigator.mediaDevices.getUserMedia({
@@ -40,6 +53,14 @@ async function startCamera() {
     await webcam.play();
     syncCanvasSizes();
     cameraStatus.textContent = "camera live";
+
+    if (pageConfig.staticPreview) {
+      poseName.textContent = "preview";
+      poseConfidence.textContent = "0%";
+      debugPanel.textContent = "GitHub Pages can host the UI, but the Python pose-detection API is not available there. Run the Flask app locally for live detection.";
+      return;
+    }
+
     window.setInterval(sendFrame, 350);
   } catch (error) {
     cameraStatus.textContent = "camera blocked";
@@ -63,7 +84,7 @@ async function sendFrame() {
   const image = capture.toDataURL("image/jpeg", 0.72);
 
   try {
-    const response = await fetch("/api/detect", {
+    const response = await fetch(getApiUrl("/api/detect"), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -170,8 +191,13 @@ devModeToggle?.addEventListener("change", () => {
 updateDevModeVisibility();
 
 document.querySelector("#sign-out-btn")?.addEventListener("click", async () => {
-  await fetch("/api/auth/logout", { method: "POST" });
-  window.location.href = "/auth";
+  if (pageConfig.staticPreview) {
+    openPath(pageConfig.authUrl);
+    return;
+  }
+
+  await fetch(getApiUrl("/api/auth/logout"), { method: "POST" });
+  openPath(pageConfig.authUrl);
 });
 
 startCamera();

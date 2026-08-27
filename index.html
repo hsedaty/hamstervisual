@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hamster Visual</title>
+    <link rel="stylesheet" href="./static/styles.css" />
+  </head>
+  <body data-static-preview="true" data-auth-url="./auth/">
+    <main class="layout">
+      <section class="hero-card intro-card">
+        <div class="session-bar">
+          <span class="eyebrow">GitHub Pages preview build</span>
+          <div class="toggle-group">
+            <label class="switch">
+              <input type="checkbox" id="dev-mode-toggle" />
+              <span class="slider"></span>
+            </label>
+            <span class="toggle-label">Development mode</span>
+          </div>
+          <button class="sign-out-btn" id="sign-out-btn">Auth preview</button>
+        </div>
+        <h1>Hampter pose list</h1>
+        <p class="lede">This Pages build serves the static UI only. For live pose detection and face authentication, run the Flask app locally.</p>
+        <div class="pose-list">
+          <span>peace</span>
+          <span>thumb up</span>
+          <span>thumb down</span>
+          <span>strong</span>
+          <span>shh</span>
+          <span>nerd</span>
+          <span>love</span>
+        </div>
+      </section>
+
+      <section class="hero-card stage-card">
+        <div class="video-shell">
+          <div class="video-stage">
+            <video id="webcam" autoplay playsinline muted></video>
+            <canvas id="overlay" width="640" height="480"></canvas>
+            <div class="video-badge" id="camera-status">camera booting</div>
+          </div>
+
+          <div class="hero-card sticker-card live-sticker-panel">
+            <div class="sticker-head">
+              <p class="eyebrow">Live sticker</p>
+              <p class="pose-readout"><span id="pose-name">no-face</span><span id="pose-confidence">0%</span></p>
+            </div>
+            <img id="sticker-image" alt="Current hamster sticker" src="./static/stickers/no-face.jpg" />
+          </div>
+        </div>
+
+        <pre id="debug-panel">waiting for first frame...</pre>
+        <canvas id="capture" width="640" height="480" hidden></canvas>
+      </section>
+    </main>
+
+    <script src="./static/app.js" defer></script>
+  </body>
+</html>

@@ -11,9 +11,22 @@ const authNameLabel = document.querySelector("#auth-name-label");
 const confidenceFill = document.querySelector("#confidence-fill");
 const confidenceValue = document.querySelector("#confidence-value");
 const enrolledBadge = document.querySelector("#enrolled-badge");
+const pageConfig = {
+  staticPreview: document.body?.dataset.staticPreview === "true",
+  apiBase: document.body?.dataset.apiBase || "",
+  homeUrl: document.body?.dataset.homeUrl || "/",
+};
 
 const overlayCtx = authOverlay.getContext("2d");
 let isSending = false;
+
+function getApiUrl(path) {
+  return pageConfig.apiBase ? `${pageConfig.apiBase}${path}` : path;
+}
+
+function openPath(path) {
+  window.location.href = new URL(path, document.baseURI).href;
+}
 
 async function startCamera() {
   try {
@@ -25,6 +38,14 @@ async function startCamera() {
     await webcam.play();
     syncSizes();
     cameraStatus.textContent = "camera live";
+
+    if (pageConfig.staticPreview) {
+      setState("idle");
+      authNameLabel.textContent = "GitHub Pages preview";
+      confidenceValue.textContent = "0%";
+      return;
+    }
+
     window.setInterval(sendFrame, 300);
   } catch (err) {
     cameraStatus.textContent = "camera blocked";
@@ -32,8 +53,13 @@ async function startCamera() {
 }
 
 async function fetchEnrolledCount() {
+  if (pageConfig.staticPreview) {
+    if (enrolledBadge) enrolledBadge.textContent = "local";
+    return;
+  }
+
   try {
-    const res = await fetch("/api/auth/status");
+    const res = await fetch(getApiUrl("/api/auth/status"));
     const data = await res.json();
     if (enrolledBadge) enrolledBadge.textContent = data.enrolledCount ?? "—";
   } catch (_) {}
@@ -52,7 +78,7 @@ async function sendFrame() {
   const image = capture.toDataURL("image/jpeg", 0.8);
 
   try {
-    const res = await fetch("/api/auth/verify", {
+    const res = await fetch(getApiUrl("/api/auth/verify"), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ image }),
@@ -98,7 +124,7 @@ function updateUI(payload) {
 
 function scheduleRedirect() {
   if (redirectTimer) return;
-  redirectTimer = setTimeout(() => { window.location.href = "/"; }, 1500);
+  redirectTimer = setTimeout(() => { openPath(pageConfig.homeUrl); }, 1500);
 }
 
 function cancelRedirect() {

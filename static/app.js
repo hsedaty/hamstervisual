@@ -1,7 +1,7 @@
 const webcam = document.querySelector("#webcam");
 const capture = document.querySelector("#capture");
 const overlay = document.querySelector("#overlay");
-const videoShell = document.querySelector(".video-shell");
+const videoStage = document.querySelector(".video-stage");
 const cameraStatus = document.querySelector("#camera-status");
 const poseName = document.querySelector("#pose-name");
 const poseConfidence = document.querySelector("#pose-confidence");
@@ -104,14 +104,14 @@ function updateDevModeVisibility() {
 function syncCanvasSizes() {
   const width = webcam.videoWidth || 640;
   const height = webcam.videoHeight || 480;
-  const shellWidth = videoShell.clientWidth || width;
-  const shellHeight = videoShell.clientHeight || height;
+  const stageWidth = videoStage?.clientWidth || width;
+  const stageHeight = videoStage?.clientHeight || height;
   const pixelRatio = window.devicePixelRatio || 1;
 
   capture.width = width;
   capture.height = height;
-  overlay.width = Math.round(shellWidth * pixelRatio);
-  overlay.height = Math.round(shellHeight * pixelRatio);
+  overlay.width = Math.round(stageWidth * pixelRatio);
+  overlay.height = Math.round(stageHeight * pixelRatio);
   overlayContext.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
 }
 
@@ -141,13 +141,13 @@ function drawPoints(points, color, radius) {
 function mapOverlayPoint(point) {
   const frameWidth = capture.width || webcam.videoWidth || 640;
   const frameHeight = capture.height || webcam.videoHeight || 480;
-  const shellWidth = videoShell.clientWidth || frameWidth;
-  const shellHeight = videoShell.clientHeight || frameHeight;
-  const scale = Math.max(shellWidth / frameWidth, shellHeight / frameHeight);
+  const stageWidth = videoStage?.clientWidth || frameWidth;
+  const stageHeight = videoStage?.clientHeight || frameHeight;
+  const scale = Math.max(stageWidth / frameWidth, stageHeight / frameHeight);
   const renderedWidth = frameWidth * scale;
   const renderedHeight = frameHeight * scale;
-  const offsetX = (shellWidth - renderedWidth) / 2;
-  const offsetY = (shellHeight - renderedHeight) / 2;
+  const offsetX = (stageWidth - renderedWidth) / 2;
+  const offsetY = (stageHeight - renderedHeight) / 2;
 
   return {
     x: point.x * scale + offsetX,
@@ -156,7 +156,7 @@ function mapOverlayPoint(point) {
 }
 
 function clearOverlay() {
-  overlayContext.clearRect(0, 0, videoShell.clientWidth || overlay.width, videoShell.clientHeight || overlay.height);
+  overlayContext.clearRect(0, 0, videoStage?.clientWidth || overlay.width, videoStage?.clientHeight || overlay.height);
 }
 
 webcam.addEventListener("loadedmetadata", syncCanvasSizes);

@@ -207,6 +207,10 @@ h1 {
 .video-shell {
   position: relative;
   width: 100%;
+}
+
+.video-stage {
+  position: relative;
   min-height: 24rem;
   aspect-ratio: 16 / 9;
   border-radius: 24px;
@@ -300,8 +304,8 @@ h1 {
   translate: 12% 0;
   width: min(24rem, 36%);
   max-width: 24rem;
-  height: min(30rem, 50%);
-  max-height: 30rem;
+  height: auto;
+  max-height: min(30rem, 50vh);
   padding: 1rem;
   z-index: 2;
   background: rgba(255, 255, 255, 0.92);
@@ -310,7 +314,7 @@ h1 {
   box-shadow: 0 20px 50px rgba(31, 23, 38, 0.14);
 }
 
-@media (max-width: 980px) {
+@media (max-width: 1100px) {
   .layout {
     grid-template-columns: 1fr;
   }
@@ -319,16 +323,19 @@ h1 {
     grid-column: auto;
   }
 
-  .video-shell {
+  .video-stage {
     min-height: 260px;
     aspect-ratio: auto;
   }
 
   .live-sticker-panel {
     position: static;
-    width: 100%;
-    max-width: none;
-    margin-top: 1rem;
+    translate: none;
+    width: clamp(16rem, 78vw, 22rem);
+    max-width: 100%;
+    margin: 1rem auto 0;
+    height: auto;
+    max-height: none;
     box-shadow: var(--shadow);
   }
 
@@ -337,6 +344,7 @@ h1 {
   }
 
   #sticker-image {
-    min-height: 28rem;
+    width: 100%;
+    max-height: clamp(14rem, 52vw, 22rem);
   }
 }

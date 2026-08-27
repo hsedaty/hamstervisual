@@ -92,7 +92,7 @@ async function sendFrame() {
       body: JSON.stringify({ image }),
     });
 
-    const payload = await response.json();
+    const payload = await readJsonResponse(response);
 
     if (!response.ok) {
       throw new Error(payload.error || "Detection failed.");
@@ -114,6 +114,20 @@ async function sendFrame() {
   } finally {
     updateDevModeVisibility();
     isSending = false;
+  }
+}
+
+async function readJsonResponse(response) {
+  const body = await response.text();
+
+  if (!body) {
+    throw new Error(`Empty response from ${response.url}`);
+  }
+
+  try {
+    return JSON.parse(body);
+  } catch {
+    throw new Error(`Non-JSON response from ${response.url}: ${body.slice(0, 160)}`);
   }
 }
 

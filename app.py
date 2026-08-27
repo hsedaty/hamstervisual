@@ -31,6 +31,9 @@ def detect_pose():
         result = detector.detect_from_base64(image_data)
     except ValueError as exc:
         return jsonify({"error": str(exc)}), 400
+    except Exception:
+        app.logger.exception("Pose detection failed")
+        return jsonify({"error": "Pose detection failed on the server."}), 500
 
     return jsonify(result)
 

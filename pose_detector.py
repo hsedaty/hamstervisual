@@ -1,10 +1,15 @@
 import base64
 import math
+import pathlib
 from typing import Any
 
 import cv2
 import mediapipe as mp
 import numpy as np
+
+
+_ROOT = pathlib.Path(__file__).parent
+FACE_DETECTOR_MODEL = str(_ROOT / "models" / "face_detection_yunet_2023mar.onnx")
 
 
 class PoseDetector:
@@ -25,6 +30,9 @@ class PoseDetector:
             max_num_hands=2,
             min_detection_confidence=0.5,
             min_tracking_confidence=0.5,
+        )
+        self.face_detector = cv2.FaceDetectorYN.create(
+            FACE_DETECTOR_MODEL, "", (320, 320), score_threshold=0.6, nms_threshold=0.3
         )
 
     def detect_from_base64(self, image_data: str) -> dict[str, Any]:
@@ -52,6 +60,8 @@ class PoseDetector:
         hand_result = self.hands.process(rgb_frame)
 
         face = self._extract_face(face_result.multi_face_landmarks, frame.shape)
+        if not face:
+            face = self._extract_face_from_detector(frame)
         hands = self._extract_hands(
             hand_result.multi_hand_landmarks,
             hand_result.multi_handedness,
@@ -107,6 +117,44 @@ class PoseDetector:
             "left_eye_center": left_eye_center,
             "right_eye_center": right_eye_center,
             "debug_points": debug_points,
+        }
+
+    def _extract_face_from_detector(self, frame: np.ndarray):
+        height, width = frame.shape[:2]
+        self.face_detector.setInputSize((width, height))
+        _, faces = self.face_detector.detect(frame)
+        if faces is None or len(faces) == 0:
+            return None
+
+        x, y, box_width, box_height = faces[0][:4]
+        left = float(x)
+        top = float(y)
+        right = float(x + box_width)
+        bottom = float(y + box_height)
+        center_x = (left + right) / 2
+
+        left_eye_center = (left + box_width * 0.32, top + box_height * 0.38)
+        right_eye_center = (left + box_width * 0.68, top + box_height * 0.38)
+        nose = (center_x, top + box_height * 0.55)
+        mouth_center = (center_x, top + box_height * 0.78)
+
+        return {
+            "face_height": max(float(box_height), 1.0),
+            "nose": nose,
+            "mouth_center": mouth_center,
+            "mouth_open": box_height * 0.1,
+            "left_eye_open": box_height * 0.08,
+            "right_eye_open": box_height * 0.08,
+            "left_eye_center": left_eye_center,
+            "right_eye_center": right_eye_center,
+            "debug_points": [
+                (left, top),
+                (right, top),
+                (right, bottom),
+                (left, bottom),
+                nose,
+                mouth_center,
+            ],
         }
 
     def _extract_hands(self, multi_hand_landmarks, multi_handedness, frame_shape):
